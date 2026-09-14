@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Releva — The business goes on</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #1E3A32;
+    --ink-deep: #142821;
+    --parchment: #EFE6D3;
+    --parchment-2: #E6DAC2;
+    --gold: #C08829;
+    --gold-soft: #D9A94F;
+    --brick: #A23E2E;
+    --text-dark: #2A2620;
+    --text-light: #F5EFDF;
+    --line: rgba(192,136,41,0.35);
+    --serif: "Fraunces", Georgia, "Iowan Old Style", serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--parchment);
+    color: var(--text-dark);
+    font-family: var(--sans);
+    line-height: 1.5;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation: none !important; transition: none !important; }
+  }
+
+  a{ color: inherit; }
+  :focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .wrap{ max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: radial-gradient(120% 140% at 10% 0%, var(--ink) 0%, var(--ink-deep) 65%);
+    color: var(--text-light);
+    padding: 28px 0 72px;
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 12px 0 56px;
+  }
+  .wordmark{
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .locale-pill{
+    font-size: 13px;
+    color: var(--gold-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 14px;
+  }
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: start;
+  }
+  h1{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height: 1.2;
+    margin: 0 0 22px;
+    max-width: 20ch;
+  }
+  .sub{
+    font-size: 16.5px;
+    max-width: 42ch;
+    color: #BBB093;
+    margin: 0 0 36px;
+  }
+
+  .cta-row{ display:flex; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+  .btn{
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    padding: 13px 22px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn-primary{ background: var(--gold); color: var(--ink-deep); }
+  .btn-primary:hover{ background: var(--gold-soft); }
+  .btn-ghost{
+    background: transparent;
+    color: var(--text-light);
+    border-color: rgba(245,239,223,0.4);
+    position: relative;
+  }
+  .btn-ghost:hover{ border-color: var(--text-light); }
+  .tag-sign{
+    position: absolute;
+    top: -14px;
+    right: -10px;
+    background: #FBF7EC;
+    color: var(--text-dark);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    transform: rotate(-6deg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+  }
+
+  .counter{
+    font-size: 13.5px;
+    color: #B9AF95;
+  }
+  .counter strong{ color: var(--gold-soft); font-weight: 600; }
+
+  /* form card inside hero */
+  .form-card{
+    background: var(--parchment);
+    color: var(--text-dark);
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  }
+  .form-card h2{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 21px;
+    margin: 0 0 6px;
+  }
+  .form-card .hint{ font-size: 13.5px; color: #6B6353; margin: 0 0 18px; }
+
+  .type-toggle{
+    display:flex; gap:8px; margin-bottom:18px;
+  }
+  .type-toggle button{
+    flex:1;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 9px 8px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text-dark);
+    cursor:pointer;
+  }
+  .type-toggle button[aria-pressed="true"]{
+    background: var(--ink);
+    color: var(--text-light);
+    border-color: var(--ink);
+  }
+
+  label{ display:block; font-size: 13px; font-weight: 500; margin: 14px 0 5px; }
+  input[type="text"], input[type="email"], textarea{
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 14.5px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    border: 1px solid #CBBE9C;
+    background: #FBF7EC;
+    color: var(--text-dark);
+    resize: vertical;
+  }
+  input:focus, textarea:focus{ border-color: var(--gold); }
+
+  .submit-btn{
+    width: 100%;
+    margin-top: 20px;
+    background: var(--ink);
+    color: var(--text-light);
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .submit-btn:hover{ background: var(--ink-deep); }
+  .submit-btn:disabled{ opacity: 0.6; cursor: default; }
+
+  .error-msg{ color: var(--brick); font-size: 13px; margin-top: 10px; }
+
+  .success{
+    text-align:center;
+    padding: 12px 0 6px;
+  }
+  .success .mark{
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 32px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .success p{ font-size: 14.5px; color: #55503F; margin: 0; }
+
+  /* ---------- STATS ---------- */
+  .stats{ padding: 72px 0; }
+  .stats-grid{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+    align-items: end;
+    border-top: 1px solid var(--line);
+    padding-top: 40px;
+  }
+  .stat-big{ font-family: var(--serif); font-weight: 500; font-size: clamp(48px, 7vw, 86px); line-height: 1; color: var(--ink); }
+  .stat-big-label{ font-size: 15px; max-width: 34ch; margin-top: 10px; color: #4B4636; }
+  .stat-list{ display:flex; flex-direction:column; gap: 24px; }
+  .stat-item{ display:flex; gap: 16px; align-items:baseline; }
+  .stat-item .n{ font-family: var(--serif); font-size: 28px; color: var(--brick); min-width: 76px; }
+  .stat-item .l{ font-size: 14.5px; color: #4B4636; }
+  .stats-cite{ font-size: 12px; color: #8A8267; margin-top: 28px; }
+
+  /* ---------- FOOTER CTA ---------- */
+  .footer-cta{
+    background: var(--ink);
+    color: var(--text-light);
+    padding: 64px 0 40px;
+    text-align: center;
+  }
+  .footer-cta h3{
+    font-family: var(--serif); font-weight: 500;
+    font-size: clamp(26px, 4vw, 36px);
+    max-width: 22ch; margin: 0 auto 28px;
+  }
+  .footer-note{
+    margin-top: 40px; font-size: 12.5px; color: #8C8468;
+    border-top: 1px solid var(--line); padding-top: 20px;
+  }
+
+  @media (max-width: 760px){
+    .hero-grid{ grid-template-columns: 1fr; }
+    .stats-grid{ grid-template-columns: 1fr; }
+    h1{ max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="nav">
+      <div class="wordmark">Releva</div>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <h1>Releva helps young entrepreneurs buy a business from owners who want to retire.</h1>
+        <p class="sub">Lifelong businesses shouldn't have to close. We are here to change that.</p>
+        <div class="cta-row">
+          <button class="btn btn-primary" onclick="selectType('buyer')">I'm looking for a business</button>
+          <button class="btn btn-ghost" onclick="selectType('seller')">
+            I'm selling my business
+            <span class="tag-sign">for sale</span>
+          </button>
+        </div>
+        <div class="counter" id="counterText">Loading community…</div>
+      </div>
+
+      <div class="form-card" id="formCard">
+        <div id="formState">
+          <h2>Join the community</h2>
+          <p class="hint">We'll reach out when there's something real to share. No spam.</p>
+
+          <div class="type-toggle" role="group" aria-label="Type of interest">
+            <button type="button" id="btnComprador" aria-pressed="true" onclick="selectType('buyer')">Looking for a business</button>
+            <button type="button" id="btnVendedor" aria-pressed="false" onclick="selectType('seller')">Selling my business</button>
+          </div>
+
+          <form id="waitlistForm" onsubmit="return handleSubmit(event)">
+            <label for="name">Name</label>
+            <input type="text" id="name" required autocomplete="name">
+
+            <label for="email">Email</label>
+            <input type="email" id="email" required autocomplete="email">
+
+            <label for="city">City</label>
+            <input type="text" id="city" required autocomplete="address-level2">
+
+            <label for="comments">Anything else? <span style="font-weight:400; color:#8A8267;">(optional)</span></label>
+            <p class="hint" style="margin: -2px 0 8px;">Tell us what's been hardest — that's what we'll build first.</p>
+            <textarea id="comments" rows="3" placeholder="e.g. I found a business I liked but couldn't tell if the numbers were real."></textarea>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Join our Mission</button>
+            <div class="error-msg" id="errorMsg" style="display:none;"></div>
+          </form>
+        </div>
+
+        <div id="successState" class="success" style="display:none;">
+          <div class="mark">Done.</div>
+          <p>You're on the list. As soon as there's news, you'll be among the first to know.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div>
+        <div class="stat-big">450,000</div>
+        <div class="stat-big-label">businesses change ownership across Europe every year — and up to a third of those transfers fail, putting 600,000 jobs at risk.</div>
+      </div>
+      <div class="stat-list">
+        <div class="stat-item"><span class="n">30%</span><span class="l">of European SME owners are expected to retire within the next decade, many without a succession plan</span></div>
+        <div class="stat-item"><span class="n">1 in 4</span><span class="l">transferable European SMEs never finds anyone to take them over — and simply disappears</span></div>
+      </div>
+    </div>
+    <div class="stats-cite">Sources: European Commission (DG GROW); OECD, "Business Transfer as an Engine for SME Growth"; European Parliament, SME transfer policy briefing.</div>
+  </div>
+</section>
+
+<section class="footer-cta">
+  <div class="wrap">
+    <h3>We're still just getting started. Be among the first to know.</h3>
+    <button class="btn btn-primary" onclick="document.getElementById('formCard').scrollIntoView({behavior:'smooth'}); document.getElementById('name').focus();">Join now</button>
+    <div class="footer-note">Releva · 2026</div>
+  </div>
+</section>
+
+<script>
+  let currentType = 'buyer';
+
+  function selectType(type){
+    currentType = type;
+    document.getElementById('btnComprador').setAttribute('aria-pressed', type === 'buyer');
+    document.getElementById('btnVendedor').setAttribute('aria-pressed', type === 'seller');
+    document.getElementById('formCard').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  async function refreshCounter(){
+    const el = document.getElementById('counterText');
+    try{
+      const res = await window.storage.list('waitlist:', true);
+      const count = res && res.keys ? res.keys.length : 0;
+      el.innerHTML = count > 0
+        ? '<strong>' + count + '</strong> ' + (count === 1 ? 'person has' : 'people have') + ' already joined'
+        : 'Be the first to join';
+    }catch(e){
+      el.textContent = '';
+    }
+  }
+
+  function sanitizeKey(str){
+    return str.trim().toLowerCase().replace(/[\/\\'"\s]/g, '_');
+  }
+
+  async function handleSubmit(evt){
+    evt.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const comments = document.getElementById('comments').value.trim();
+    const errorMsg = document.getElementById('errorMsg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    errorMsg.style.display = 'none';
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if(!name || !emailOk || !city){
+      errorMsg.textContent = 'Please fill in your name, email and city before submitting.';
+      errorMsg.style.display = 'block';
+      return false;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    try{
+      const key = 'waitlist:' + sanitizeKey(email);
+      const value = JSON.stringify({ name, email, city, comments, type: currentType, ts: Date.now() });
+      const result = await window.storage.set(key, value, true);
+      if(!result){ throw new Error('write failed'); }
+
+      document.getElementById('formState').style.display = 'none';
+      document.getElementById('successState').style.display = 'block';
+      refreshCounter();
+    }catch(e){
+      errorMsg.textContent = "Couldn't save that — please try again in a moment.";
+      errorMsg.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Join our Mission';
+    }
+    return false;
+  }
+
+  refreshCounter();
+</script>
+
+</body>
+</html>
