@@ -69,12 +69,27 @@
     font-weight: 600;
     letter-spacing: 0.01em;
   }
-  .locale-pill{
-    font-size: 13px;
-    color: var(--gold-soft);
+
+  .lang-toggle{
+    display:flex; gap:2px;
     border: 1px solid var(--line);
     border-radius: 999px;
-    padding: 5px 14px;
+    padding: 3px;
+  }
+  .lang-toggle button{
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 13px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--gold-soft);
+    cursor: pointer;
+  }
+  .lang-toggle button[aria-pressed="true"]{
+    background: var(--gold);
+    color: var(--ink-deep);
   }
 
   .hero-grid{
@@ -185,6 +200,21 @@
   }
   input:focus, select:focus, textarea:focus{ border-color: var(--gold); }
 
+  .age-input{
+    width: 84px;
+    text-align: center;
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 500;
+    padding: 9px 10px;
+  }
+  .age-input::-webkit-outer-spin-button,
+  .age-input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .age-input[type="number"]{ -moz-appearance: textfield; }
+
   .submit-btn{
     width: 100%;
     margin-top: 20px;
@@ -264,62 +294,66 @@
   <div class="wrap">
     <div class="nav">
       <div class="wordmark">Releva</div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" id="langEN" aria-pressed="true" onclick="applyLanguage('en')">EN</button>
+        <button type="button" id="langES" aria-pressed="false" onclick="applyLanguage('es')">ES</button>
+      </div>
     </div>
 
     <div class="hero-grid">
       <div>
-        <h1>Releva helps young entrepreneurs buy a business from owners who want to retire.</h1>
-        <p class="sub">Lifelong businesses shouldn't have to close. We are here to change that.</p>
+        <h1 data-i18n="h1">Releva helps young entrepreneurs buy a business from owners who want to retire.</h1>
+        <p class="sub" data-i18n="sub">Lifelong businesses shouldn't have to close. We are here to change that.</p>
         <div class="cta-row">
-          <button class="btn btn-primary" onclick="selectType('buyer')">I'm looking for a business</button>
+          <button class="btn btn-primary" onclick="selectType('buyer')"><span data-i18n="cta_buy">I'm looking for a business</span></button>
           <button class="btn btn-ghost" onclick="selectType('seller')">
-            I'm selling my business
-            <span class="tag-sign">for sale</span>
+            <span data-i18n="cta_sell">I'm selling my business</span>
+            <span class="tag-sign" data-i18n="tag_sale">for sale</span>
           </button>
         </div>
       </div>
 
       <div class="form-card" id="formCard">
         <div id="formState">
-          <h2>Join the community</h2>
-          <p class="hint">We'll reach out when there's something real to share. No spam, and your info is only used to contact you about Releva.</p>
+          <h2 data-i18n="form_title">Join the community</h2>
+          <p class="hint" data-i18n="form_hint">We'll reach out when there's something real to share. No spam, and your info is only used to contact you about Releva.</p>
 
           <div class="type-toggle" role="group" aria-label="Type of interest">
-            <button type="button" id="btnComprador" aria-pressed="true" onclick="selectType('buyer')">Looking for a business</button>
-            <button type="button" id="btnVendedor" aria-pressed="false" onclick="selectType('seller')">Selling my business</button>
+            <button type="button" id="btnComprador" aria-pressed="true" onclick="selectType('buyer')"><span data-i18n="toggle_buy">Looking for a business</span></button>
+            <button type="button" id="btnVendedor" aria-pressed="false" onclick="selectType('seller')"><span data-i18n="toggle_sell">Selling my business</span></button>
           </div>
 
           <form id="waitlistForm" onsubmit="return handleSubmit(event)">
             <input type="hidden" name="type" id="typeField" value="buyer">
 
-            <label for="name">Name</label>
+            <label for="name"><span data-i18n="label_name">Name</span></label>
             <input type="text" id="name" name="name" required autocomplete="name">
 
-            <label for="age">Age</label>
-            <input type="number" id="age" name="age" min="16" max="99" required placeholder="23">
+            <label for="age"><span data-i18n="label_age">Age</span></label>
+            <input type="number" id="age" name="age" class="age-input" min="16" max="99" required placeholder="23">
 
-            <label for="email">Email</label>
+            <label for="email"><span data-i18n="label_email">Email</span></label>
             <input type="email" id="email" name="email" required autocomplete="email">
 
-            <label for="phone">Phone <span style="font-weight:400; color:#8A8267;">(optional)</span></label>
-            <p class="hint" style="margin: -2px 0 8px;">Join the WhatsApp group to get notified for the best opportunities.</p>
+            <label for="phone"><span data-i18n="label_phone">Phone</span> <span style="font-weight:400; color:#8A8267;" data-i18n="optional">(optional)</span></label>
+            <p class="hint" style="margin: -2px 0 8px;" data-i18n="phone_hint">Join the WhatsApp group to get notified for the best opportunities.</p>
             <input type="tel" id="phone" name="phone" autocomplete="tel">
 
-            <label for="city">City</label>
+            <label for="city"><span data-i18n="label_city">City</span></label>
             <input type="text" id="city" name="city" required autocomplete="address-level2">
 
-            <label for="comments">Anything else? <span style="font-weight:400; color:#8A8267;">(optional)</span></label>
-            <p class="hint" style="margin: -2px 0 8px;">Constructive comments, or how you'd like us to help.</p>
-            <textarea id="comments" name="comments" rows="3" placeholder="e.g. I found a business I liked but couldn't tell if the numbers were real."></textarea>
+            <label for="comments"><span data-i18n="label_comments">Anything else?</span> <span style="font-weight:400; color:#8A8267;" data-i18n="optional">(optional)</span></label>
+            <p class="hint" style="margin: -2px 0 8px;" data-i18n="comments_hint">Constructive comments, or how you'd like us to help.</p>
+            <textarea id="comments" name="comments" rows="3" data-i18n-placeholder="comments_placeholder" placeholder="e.g. I found a business I liked but couldn't tell if the numbers were real."></textarea>
 
-            <button type="submit" class="submit-btn" id="submitBtn">Join our Mission</button>
+            <button type="submit" class="submit-btn" id="submitBtn" data-i18n="submit_default">Join our Mission</button>
             <div class="error-msg" id="errorMsg" style="display:none;"></div>
           </form>
         </div>
 
         <div id="successState" class="success" style="display:none;">
-          <div class="mark">Done.</div>
-          <p>You're on the list. As soon as there's news, you'll be among the first to know.</p>
+          <div class="mark" data-i18n="success_mark">Done.</div>
+          <p data-i18n="success_text">You're on the list. As soon as there's news, you'll be among the first to know.</p>
         </div>
       </div>
     </div>
@@ -330,31 +364,143 @@
   <div class="wrap">
     <div class="stats-grid">
       <div>
-        <div class="stat-big">450,000</div>
-        <div class="stat-big-label">businesses change ownership across Europe every year — and up to a third of those transfers fail, putting 600,000 jobs at risk.</div>
+        <div class="stat-big" data-i18n="stat_big_number">450,000</div>
+        <div class="stat-big-label" data-i18n="stat_big_label">businesses change ownership across Europe every year — and up to a third of those transfers fail, putting 600,000 jobs at risk.</div>
       </div>
       <div class="stat-list">
-        <div class="stat-item"><span class="n">30%</span><span class="l">of European SME owners are expected to retire within the next decade, many without a succession plan</span></div>
-        <div class="stat-item"><span class="n">1 in 4</span><span class="l">transferable European SMEs never finds anyone to take them over — and simply disappears</span></div>
+        <div class="stat-item"><span class="n" data-i18n="stat1_n">30%</span><span class="l" data-i18n="stat1_l">of European SME owners are expected to retire within the next decade, many without a succession plan</span></div>
+        <div class="stat-item"><span class="n" data-i18n="stat2_n">1 in 4</span><span class="l" data-i18n="stat2_l">transferable European SMEs never finds anyone to take them over — and simply disappears</span></div>
       </div>
     </div>
-    <div class="stats-cite">Sources: European Commission (DG GROW); OECD, "Business Transfer as an Engine for SME Growth"; European Parliament, SME transfer policy briefing.</div>
+    <div class="stats-cite" data-i18n="stats_cite">Sources: European Commission (DG GROW); OECD, "Business Transfer as an Engine for SME Growth"; European Parliament, SME transfer policy briefing.</div>
   </div>
 </section>
 
 <section class="footer-cta">
   <div class="wrap">
-    <h3>We're still just getting started. Be among the first to know.</h3>
-    <button class="btn btn-primary" onclick="document.getElementById('formCard').scrollIntoView({behavior:'smooth'}); document.getElementById('name').focus();">Join now</button>
+    <h3 data-i18n="footer_h3">We're still just getting started. Be among the first to know.</h3>
+    <button class="btn btn-primary" data-i18n="footer_btn" onclick="document.getElementById('formCard').scrollIntoView({behavior:'smooth'}); document.getElementById('name').focus();">Join now</button>
     <div class="footer-note">Releva · 2026</div>
   </div>
 </section>
 
 <script>
-  // 👉 Paste your Formspree endpoint here, e.g. "https://formspree.io/f/xxxxabcd"
   const FORM_ENDPOINT = "https://formspree.io/f/xvkoejjk";
 
+  const translations = {
+    en: {
+      h1: "Releva helps young entrepreneurs buy a business from owners who want to retire.",
+      sub: "Lifelong businesses shouldn't have to close. We are here to change that.",
+      cta_buy: "I'm looking for a business",
+      cta_sell: "I'm selling my business",
+      tag_sale: "for sale",
+      form_title: "Join the community",
+      form_hint: "We'll reach out when there's something real to share. No spam, and your info is only used to contact you about Releva.",
+      toggle_buy: "Looking for a business",
+      toggle_sell: "Selling my business",
+      label_name: "Name",
+      label_age: "Age",
+      label_email: "Email",
+      label_phone: "Phone",
+      label_city: "City",
+      label_comments: "Anything else?",
+      optional: "(optional)",
+      phone_hint: "Join the WhatsApp group to get notified for the best opportunities.",
+      comments_hint: "Constructive comments, or how you'd like us to help.",
+      comments_placeholder: "e.g. I found a business I liked but couldn't tell if the numbers were real.",
+      submit_default: "Join our Mission",
+      submitting: "Submitting…",
+      success_mark: "Done.",
+      success_text: "You're on the list. As soon as there's news, you'll be among the first to know.",
+      stat_big_number: "450,000",
+      stat_big_label: "businesses change ownership across Europe every year — and up to a third of those transfers fail, putting 600,000 jobs at risk.",
+      stat1_n: "30%",
+      stat1_l: "of European SME owners are expected to retire within the next decade, many without a succession plan",
+      stat2_n: "1 in 4",
+      stat2_l: "transferable European SMEs never finds anyone to take them over — and simply disappears",
+      stats_cite: "Sources: European Commission (DG GROW); OECD, \"Business Transfer as an Engine for SME Growth\"; European Parliament, SME transfer policy briefing.",
+      footer_h3: "We're still just getting started. Be among the first to know.",
+      footer_btn: "Join now",
+      err_required: "Please fill in your name, age, email and city before submitting.",
+      err_not_connected: "Form not connected yet — add your Formspree URL in the code.",
+      err_submit_fail: "Couldn't submit that — please try again in a moment."
+    },
+    es: {
+      h1: "Releva ayuda a jóvenes emprendedores a comprar un negocio de dueños que quieren jubilarse.",
+      sub: "Los negocios de toda la vida no tienen por qué cerrar. Estamos aquí para cambiar eso.",
+      cta_buy: "Busco un negocio",
+      cta_sell: "Vendo mi negocio",
+      tag_sale: "se traspasa",
+      form_title: "Únete a la comunidad",
+      form_hint: "Te avisamos en cuanto haya algo real que contarte. Nada de spam, y tu información solo se usa para contactarte sobre Releva.",
+      toggle_buy: "Busco un negocio",
+      toggle_sell: "Vendo mi negocio",
+      label_name: "Nombre",
+      label_age: "Edad",
+      label_email: "Email",
+      label_phone: "Teléfono",
+      label_city: "Ciudad",
+      label_comments: "¿Algo más?",
+      optional: "(opcional)",
+      phone_hint: "Únete al grupo de WhatsApp para enterarte de las mejores oportunidades.",
+      comments_hint: "Comentarios constructivos, o en qué te gustaría que te ayudáramos.",
+      comments_placeholder: "ej. Encontré un negocio que me gustaba pero no podía saber si las cifras eran reales.",
+      submit_default: "Únete a la misión",
+      submitting: "Enviando…",
+      success_mark: "Hecho.",
+      success_text: "Ya estás en la lista. En cuanto haya novedades, serás de los primeros en saberlo.",
+      stat_big_number: "450.000",
+      stat_big_label: "negocios cambian de dueño en Europa cada año — y hasta un tercio de esos traspasos fracasa, poniendo en riesgo 600.000 empleos.",
+      stat1_n: "30%",
+      stat1_l: "de los dueños de pyme europeos se jubilarán en la próxima década, muchos sin plan de sucesión",
+      stat2_n: "1 de cada 4",
+      stat2_l: "pymes europeas transferibles nunca encuentra quien las continúe — y simplemente desaparece",
+      stats_cite: "Fuentes: Comisión Europea (DG GROW); OCDE, \"Business Transfer as an Engine for SME Growth\"; Parlamento Europeo, informe de política sobre transmisión de pymes.",
+      footer_h3: "Todavía estamos empezando. Sé de los primeros en enterarte.",
+      footer_btn: "Apuntarme ahora",
+      err_required: "Rellena tu nombre, edad, email y ciudad antes de enviar.",
+      err_not_connected: "Formulario no conectado todavía — añade tu URL de Formspree en el código.",
+      err_submit_fail: "No se pudo enviar — inténtalo de nuevo en un momento."
+    }
+  };
+
+  let currentLang = 'en';
   let currentType = 'buyer';
+
+  function t(key){
+    return (translations[currentLang] && translations[currentLang][key]) || key;
+  }
+
+  function applyLanguage(lang){
+    if(!translations[lang]) lang = 'en';
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      const key = el.getAttribute('data-i18n');
+      if(translations[lang][key] !== undefined) el.textContent = translations[lang][key];
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+      const key = el.getAttribute('data-i18n-placeholder');
+      if(translations[lang][key] !== undefined) el.placeholder = translations[lang][key];
+    });
+
+    document.getElementById('langEN').setAttribute('aria-pressed', lang === 'en');
+    document.getElementById('langES').setAttribute('aria-pressed', lang === 'es');
+
+    try{ localStorage.setItem('releva_lang', lang); }catch(e){}
+  }
+
+  function initLanguage(){
+    let saved = null;
+    try{ saved = localStorage.getItem('releva_lang'); }catch(e){}
+    if(saved === 'en' || saved === 'es'){
+      applyLanguage(saved);
+      return;
+    }
+    const browserLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+    applyLanguage(browserLang.indexOf('es') === 0 ? 'es' : 'en');
+  }
 
   function selectType(type){
     currentType = type;
@@ -378,19 +524,19 @@
 
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if(!name || !age || !emailOk || !city){
-      errorMsg.textContent = 'Please fill in your name, age, email and city before submitting.';
+      errorMsg.textContent = t('err_required');
       errorMsg.style.display = 'block';
       return false;
     }
 
     if(FORM_ENDPOINT.includes('PASTE_YOUR')){
-      errorMsg.textContent = 'Form not connected yet — add your Formspree URL in the code.';
+      errorMsg.textContent = t('err_not_connected');
       errorMsg.style.display = 'block';
       return false;
     }
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting…';
+    submitBtn.textContent = t('submitting');
 
     try{
       const res = await fetch(FORM_ENDPOINT, {
@@ -403,13 +549,15 @@
       document.getElementById('formState').style.display = 'none';
       document.getElementById('successState').style.display = 'block';
     }catch(e){
-      errorMsg.textContent = "Couldn't submit that — please try again in a moment.";
+      errorMsg.textContent = t('err_submit_fail');
       errorMsg.style.display = 'block';
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Join our Mission';
+      submitBtn.textContent = t('submit_default');
     }
     return false;
   }
+
+  initLanguage();
 </script>
 
 </body>
