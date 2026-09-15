@@ -172,7 +172,7 @@
   }
 
   label{ display:block; font-size: 13px; font-weight: 500; margin: 14px 0 5px; }
-  input[type="text"], input[type="email"], textarea{
+  input[type="text"], input[type="email"], input[type="tel"], select, textarea{
     width: 100%;
     font-family: var(--sans);
     font-size: 14.5px;
@@ -183,7 +183,7 @@
     color: var(--text-dark);
     resize: vertical;
   }
-  input:focus, textarea:focus{ border-color: var(--gold); }
+  input:focus, select:focus, textarea:focus{ border-color: var(--gold); }
 
   .submit-btn{
     width: 100%;
@@ -282,7 +282,7 @@
       <div class="form-card" id="formCard">
         <div id="formState">
           <h2>Join the community</h2>
-          <p class="hint">We'll reach out when there's something real to share. No spam.</p>
+          <p class="hint">We'll reach out when there's something real to share. No spam, and your info is only used to contact you about Releva.</p>
 
           <div class="type-toggle" role="group" aria-label="Type of interest">
             <button type="button" id="btnComprador" aria-pressed="true" onclick="selectType('buyer')">Looking for a business</button>
@@ -295,14 +295,21 @@
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required autocomplete="name">
 
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="16" max="99" required placeholder="23">
+
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required autocomplete="email">
+
+            <label for="phone">Phone <span style="font-weight:400; color:#8A8267;">(optional)</span></label>
+            <p class="hint" style="margin: -2px 0 8px;">Join the WhatsApp group to get notified for the best opportunities.</p>
+            <input type="tel" id="phone" name="phone" autocomplete="tel">
 
             <label for="city">City</label>
             <input type="text" id="city" name="city" required autocomplete="address-level2">
 
             <label for="comments">Anything else? <span style="font-weight:400; color:#8A8267;">(optional)</span></label>
-            <p class="hint" style="margin: -2px 0 8px;">Tell us what's been hardest — that's what we'll build first.</p>
+            <p class="hint" style="margin: -2px 0 8px;">Constructive comments, or how you'd like us to help.</p>
             <textarea id="comments" name="comments" rows="3" placeholder="e.g. I found a business I liked but couldn't tell if the numbers were real."></textarea>
 
             <button type="submit" class="submit-btn" id="submitBtn">Join our Mission</button>
@@ -361,6 +368,7 @@
     evt.preventDefault();
     const form = document.getElementById('waitlistForm');
     const name = document.getElementById('name').value.trim();
+    const age = document.getElementById('age').value.trim();
     const email = document.getElementById('email').value.trim();
     const city = document.getElementById('city').value.trim();
     const errorMsg = document.getElementById('errorMsg');
@@ -369,8 +377,8 @@
     errorMsg.style.display = 'none';
 
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    if(!name || !emailOk || !city){
-      errorMsg.textContent = 'Please fill in your name, email and city before submitting.';
+    if(!name || !age || !emailOk || !city){
+      errorMsg.textContent = 'Please fill in your name, age, email and city before submitting.';
       errorMsg.style.display = 'block';
       return false;
     }
