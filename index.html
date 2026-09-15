@@ -122,12 +122,6 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.25);
   }
 
-  .counter{
-    font-size: 13.5px;
-    color: #B9AF95;
-  }
-  .counter strong{ color: var(--gold-soft); font-weight: 600; }
-
   /* form card inside hero */
   .form-card{
     background: var(--parchment);
@@ -271,7 +265,6 @@
             <span class="tag-sign">for sale</span>
           </button>
         </div>
-        <div class="counter" id="counterText">Loading community…</div>
       </div>
 
       <div class="form-card" id="formCard">
@@ -285,18 +278,20 @@
           </div>
 
           <form id="waitlistForm" onsubmit="return handleSubmit(event)">
+            <input type="hidden" name="type" id="typeField" value="buyer">
+
             <label for="name">Name</label>
-            <input type="text" id="name" required autocomplete="name">
+            <input type="text" id="name" name="name" required autocomplete="name">
 
             <label for="email">Email</label>
-            <input type="email" id="email" required autocomplete="email">
+            <input type="email" id="email" name="email" required autocomplete="email">
 
             <label for="city">City</label>
-            <input type="text" id="city" required autocomplete="address-level2">
+            <input type="text" id="city" name="city" required autocomplete="address-level2">
 
             <label for="comments">Anything else? <span style="font-weight:400; color:#8A8267;">(optional)</span></label>
             <p class="hint" style="margin: -2px 0 8px;">Tell us what's been hardest — that's what we'll build first.</p>
-            <textarea id="comments" rows="3" placeholder="e.g. I found a business I liked but couldn't tell if the numbers were real."></textarea>
+            <textarea id="comments" name="comments" rows="3" placeholder="e.g. I found a business I liked but couldn't tell if the numbers were real."></textarea>
 
             <button type="submit" class="submit-btn" id="submitBtn">Join our Mission</button>
             <div class="error-msg" id="errorMsg" style="display:none;"></div>
@@ -337,38 +332,25 @@
 </section>
 
 <script>
+  // 👉 Paste your Formspree endpoint here, e.g. "https://formspree.io/f/xxxxabcd"
+  const FORM_ENDPOINT = "https://formspree.io/f/xvkoejjk";
+
   let currentType = 'buyer';
 
   function selectType(type){
     currentType = type;
+    document.getElementById('typeField').value = type;
     document.getElementById('btnComprador').setAttribute('aria-pressed', type === 'buyer');
     document.getElementById('btnVendedor').setAttribute('aria-pressed', type === 'seller');
     document.getElementById('formCard').scrollIntoView({behavior:'smooth', block:'center'});
   }
 
-  async function refreshCounter(){
-    const el = document.getElementById('counterText');
-    try{
-      const res = await window.storage.list('waitlist:', true);
-      const count = res && res.keys ? res.keys.length : 0;
-      el.innerHTML = count > 0
-        ? '<strong>' + count + '</strong> ' + (count === 1 ? 'person has' : 'people have') + ' already joined'
-        : 'Be the first to join';
-    }catch(e){
-      el.textContent = '';
-    }
-  }
-
-  function sanitizeKey(str){
-    return str.trim().toLowerCase().replace(/[\/\\'"\s]/g, '_');
-  }
-
   async function handleSubmit(evt){
     evt.preventDefault();
+    const form = document.getElementById('waitlistForm');
     const name = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const city = document.getElementById('city').value.trim();
-    const comments = document.getElementById('comments').value.trim();
     const errorMsg = document.getElementById('errorMsg');
     const submitBtn = document.getElementById('submitBtn');
 
@@ -381,28 +363,33 @@
       return false;
     }
 
+    if(FORM_ENDPOINT.includes('PASTE_YOUR')){
+      errorMsg.textContent = 'Form not connected yet — add your Formspree URL in the code.';
+      errorMsg.style.display = 'block';
+      return false;
+    }
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting…';
 
     try{
-      const key = 'waitlist:' + sanitizeKey(email);
-      const value = JSON.stringify({ name, email, city, comments, type: currentType, ts: Date.now() });
-      const result = await window.storage.set(key, value, true);
-      if(!result){ throw new Error('write failed'); }
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if(!res.ok){ throw new Error('submit failed'); }
 
       document.getElementById('formState').style.display = 'none';
       document.getElementById('successState').style.display = 'block';
-      refreshCounter();
     }catch(e){
-      errorMsg.textContent = "Couldn't save that — please try again in a moment.";
+      errorMsg.textContent = "Couldn't submit that — please try again in a moment.";
       errorMsg.style.display = 'block';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Join our Mission';
     }
     return false;
   }
-
-  refreshCounter();
 </script>
 
 </body>
